@@ -27,7 +27,7 @@ It does not praise you, diagnose you, or tell you what to believe. Nothing decay
 ## Using it
 
 1. Open the link above and say something. With no setup, a simple built-in reader sorts your sentences onto the map. It only matches words, so its replies are basic.
-2. For real readings, connect Claude: **More > Claude**, then paste your own Claude API key. You create one in the [Claude Console](https://platform.claude.com/settings/keys). If the Console asks, limit the key to one workspace.
+2. For real readings, connect Claude: **More > Claude**, then paste your own Claude API key. You create one in the [Claude Console](https://platform.claude.com/settings/keys). Choose one workspace for the key when you create it. If you do not, Horizon will ask for a workspace ID, which is listed on the Console's [Workspaces page](https://platform.claude.com/settings/workspaces).
 3. On a phone, add the page to your home screen so it opens like an app.
 
 **What a key costs you.** Anthropic bills your account for each reading. Going by the size of the prompt, a daily entry should cost about one to four US cents with the default model, at the prices published on 17 November 2026 (Claude Sonnet 5.5: $2 per million input tokens, $10 per million output tokens). That is an estimate and has not been measured on real calls yet. You can cap spending in the Console, and change the model under **More > Claude > Advanced**.

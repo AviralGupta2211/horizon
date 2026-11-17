@@ -22,6 +22,7 @@
     source: 'https://github.com/AviralGupta2211/horizon',
     feedback: 'https://github.com/AviralGupta2211/horizon/issues/new',
     keys: 'https://platform.claude.com/settings/keys',
+    workspaces: 'https://platform.claude.com/settings/workspaces',
     helplines: 'https://findahelpline.com'
   };
   /* What the page may load and where it may send things, when it runs as a website. */

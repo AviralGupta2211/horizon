@@ -712,7 +712,10 @@ async function entry(page, words) {
       api.needWorkspace = true;
       await click(page, '.btns [data-act="claude-connect"]');
       await page.waitForFunction('document.querySelector("#k-status").textContent.includes("not tied to one workspace")', { timeout: 6000 });
-      await click(page, '.adv summary'); await type(page, '#k-ws', fakeApi.WORKSPACE);
+      assert.ok(await page.$eval('.adv', (d) => d.open), 'Advanced opens itself, at the workspace box');
+      assert.strictEqual(await page.evaluate('document.activeElement.id'), 'k-ws');
+      assert.ok((await page.$$eval('.adv a', (as) => as.map((a) => a.href))).includes('https://platform.claude.com/settings/workspaces'));
+      await type(page, '#k-ws', fakeApi.WORKSPACE);
       await click(page, '.adv [data-act="claude-connect"]');
       await page.waitForFunction((w) => { const c = JSON.parse(localStorage.getItem('horizon.claude.v1') || '{}'); return c.workspace === w; }, { timeout: 6000 }, fakeApi.WORKSPACE);
       assert.strictEqual(last().headers['anthropic-workspace-id'], fakeApi.WORKSPACE);

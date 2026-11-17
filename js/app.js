@@ -49,7 +49,7 @@
     if (code === 'org_blocked') return 'Your Claude organization does not let its keys be used from a web page. That is set on the organization, so nothing on this page can change it. A key from a personal account works.';
     if (code === 'billing') return 'Your Anthropic account needs credit, a payment method or a higher spend limit. Check billing in the Claude Console.';
     if (code === 'no_permission') return 'This key is not allowed to do that. Check what the key can use in the Claude Console.';
-    if (code === 'need_workspace') return 'This key is not tied to one workspace. Add the workspace ID under Advanced, or make a key for a single workspace.';
+    if (code === 'need_workspace') return 'This key is not tied to one workspace, so Anthropic needs to be told which one to use. Add a workspace ID under Advanced, or make a key for a single workspace.';
     if (code === 'bad_workspace') return 'Anthropic did not recognise the workspace ID. Check it in the Claude Console.';
     if (code === 'bad_model') return 'Anthropic did not recognise a model name. Check the names under Advanced.';
     if (code === 'bad_request') return 'Anthropic did not accept the request.';
@@ -458,7 +458,7 @@
       h += '<div class="btns"><button class="btn ghost" type="button" data-act="claude-connect">Test the connection</button><button class="btn ghost danger" type="button" data-act="claude-forget">Forget this key</button></div>';
     } else {
       h += '<p class="hint">Horizon reads what you say with Claude. On this site that runs on your own Claude API key. Without one, a simple built-in reader sorts your sentences, and you miss the real readings.</p>';
-      h += '<ol class="howto"><li>Create a key in the ' + ext(L.keys, 'Claude Console') + '. If it asks, limit the key to one workspace.</li><li>Paste it below and press Connect.</li></ol>';
+      h += '<ol class="howto"><li>Create a key in the ' + ext(L.keys, 'Claude Console') + '. Choose one workspace for the key when you create it; that saves a step here.</li><li>Paste it below and press Connect.</li></ol>';
       h += '<div class="field"><label for="k-key">Claude API key</label><input type="password" id="k-key" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="sk-ant-…">';
       h += '<p id="k-status" class="note" role="status"></p><div class="btns"><button class="btn" type="button" data-act="claude-connect">Connect</button></div></div>';
     }
@@ -466,6 +466,7 @@
       '<label for="k-main">Model for readings</label><input type="text" id="k-main" autocomplete="off" autocapitalize="off" spellcheck="false" value="' + esc(c.main) + '" placeholder="' + esc(c.defaults.main) + '">' +
       '<label for="k-quick">Model for quick questions</label><input type="text" id="k-quick" autocomplete="off" autocapitalize="off" spellcheck="false" value="' + esc(c.quick) + '" placeholder="' + esc(c.defaults.quick) + '">' +
       '<label for="k-ws">Workspace ID, only for a key that is not tied to one workspace</label><input type="text" id="k-ws" autocomplete="off" autocapitalize="off" spellcheck="false" value="' + esc(c.workspace) + '" placeholder="wrkspc_…">' +
+      '<p class="small">Workspace IDs are listed on the ' + ext(L.workspaces, 'Workspaces page') + ' of the Claude Console, in the ID column.</p>' +
       (c.connected ? '<div class="btns"><button class="btn ghost" type="button" data-act="claude-connect">Save and test</button></div>' : '<p class="small">These are used when you press Connect.</p>') + '</div></details>';
     h += '<div class="section"><h3>What happens to the key</h3><div class="key">' +
       '<b>Where it is kept</b><span>In this browser, on this device. It is never sent to this website\'s host or to anyone but Anthropic.</span>' +
@@ -776,7 +777,12 @@
         S.connBusy = false;
         sheet.querySelectorAll('[data-act="claude-connect"]').forEach(function (b) { b.disabled = false; });
         var now = $('#k-status'), code = e && e.code;
-        if (now) { now.className = 'note warn'; now.textContent = copyFor(code) + (e && e.detail && code !== 'network' ? ' Anthropic said: ' + e.detail : ''); }
+        if (now) { now.className = 'note warn'; now.textContent = copyFor(code) + (e && e.detail && code !== 'network' && code !== 'need_workspace' ? ' Anthropic said: ' + e.detail : ''); }
+        if (code === 'need_workspace' || code === 'bad_workspace') { // show where the workspace ID goes
+          var adv = sheet.querySelector('.adv'), ws = $('#k-ws');
+          if (adv) adv.open = true;
+          if (ws) { ws.focus(); ws.scrollIntoView({ block: 'nearest' }); }
+        }
       });
     },
     'claude-forget': async function () {
