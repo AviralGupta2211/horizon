@@ -84,7 +84,7 @@ The code lives on `main`. The public site is served by GitHub Pages from the `gh
 sh tools/publish-site.sh
 ```
 
-GitHub takes a minute or two to put it live.
+GitHub takes a minute or two to put it live. Then `node test/live.js` opens the live page in headless Chrome, makes one entry with the built-in reader, and lists every address the page contacted. It should list only the site itself.
 
 ## Checks
 

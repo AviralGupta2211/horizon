@@ -10,7 +10,8 @@
     "shots": "node test/e2e.js --shots",
     "icons": "node tools/make-icons.js",
     "serve": "python3 -m http.server 8000",
-    "publish-site": "sh tools/publish-site.sh"
+    "publish-site": "sh tools/publish-site.sh",
+    "check-live": "node test/live.js"
   },
   "devDependencies": {
     "puppeteer-core": "^25.17.0"

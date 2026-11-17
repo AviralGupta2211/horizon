@@ -417,14 +417,15 @@
         else { links.push({ from: 'new:' + i, to: best.id, kind: 'same_as' }); if (!bridge) bridge = ['new:' + i, best.id]; }
       }
     });
+    function q(text, n) { return clip(text, n).replace(/[.!?]+$/, ''); } // quoted inside a sentence, so without its own full stop
     var last = (state.meta.kinds || []).slice(-2), move, quiet = leastVisited(state, units.map(function (u) { return u.region; }));
     var firstBelief = -1; units.forEach(function (u, i) { if (firstBelief < 0 && (u.type === 'belief' || u.type === 'value')) firstBelief = i; });
     if (rift) {
-      move = { kind: 'rift', title: 'These two pull apart', body: 'Today you said "' + clip(units[+rift[0].slice(4)].text, 110) + '". Earlier you said "' + clip(unitById(state, rift[1]).text, 110) + '". As worded, they point in different directions. Which one would you change, or do you hold both?', refs: rift };
+      move = { kind: 'rift', title: 'These two pull apart', body: 'Today you said "' + q(units[+rift[0].slice(4)].text, 110) + '". Earlier you said "' + q(unitById(state, rift[1]).text, 110) + '". As worded, they point in different directions. Which one would you change, or do you hold both?', refs: rift };
     } else if (bridge && last.indexOf('bridge') === -1) {
-      move = { kind: 'bridge', title: 'You have said this before', body: 'Today: "' + clip(units[+bridge[0].slice(4)].text, 110) + '". Earlier: "' + clip(unitById(state, bridge[1]).text, 110) + '". These look like the same idea showing up twice. What is the idea underneath both?', refs: bridge };
+      move = { kind: 'bridge', title: 'You have said this before', body: 'Today: "' + q(units[+bridge[0].slice(4)].text, 110) + '". Earlier: "' + q(unitById(state, bridge[1]).text, 110) + '". These look like the same idea showing up twice. What is the idea underneath both?', refs: bridge };
     } else if (firstBelief >= 0 && last.indexOf('bet') === -1) {
-      move = { kind: 'bet', title: 'Put it to a test', body: 'You said "' + clip(units[firstBelief].text, 120) + '". If that is true, something you can check in the next week should go a certain way. Write the prediction in your own words and take the bet.', refs: ['new:' + firstBelief], bet: { about: 'new:' + firstBelief, text: '', due_days: 7 } };
+      move = { kind: 'bet', title: 'Put it to a test', body: 'You said "' + q(units[firstBelief].text, 120) + '". If that is true, something you can check in the next week should go a certain way. Write the prediction in your own words and take the bet.', refs: ['new:' + firstBelief], bet: { about: 'new:' + firstBelief, text: '', due_days: 7 } };
     } else {
       var rn = REGIONS[regionIndex(quiet)].name;
       move = { kind: 'door', title: rn + ' is still under fog', body: 'You have said little about ' + rn.toLowerCase() + ' so far. ' + doorQuestion(quiet, state.entries.length + 'd'), refs: [], door_region: quiet };
