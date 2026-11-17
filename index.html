@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Horizon</title>
+<meta name="description" content="Talk to it for two minutes a day. It builds a map of how you think, and shows where that map is solid, thin, untested, or at odds with itself.">
+<meta property="og:title" content="Horizon">
+<meta property="og:description" content="Talk to it for two minutes a day. It builds a map of how you think.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://aviralgupta2211.github.io/horizon/icons/share.jpg">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#0b1322">
+<meta name="color-scheme" content="dark">
+<!-- First, so its rules are in place before anything else loads. Outside Claude it locks the page down:
+     the only other server the page may contact is api.anthropic.com. See js/env.js. -->
+<script src="js/env.js"></script>
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Horizon">
+<link rel="stylesheet" href="css/fonts.css">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<noscript><p style="padding:24px;font:16px/1.5 system-ui,sans-serif;color:#ece7da">Horizon needs JavaScript to run. Everything it does happens in this browser.</p></noscript>
+<div class="app" id="app" data-sheet="open">
+  <canvas id="world" tabindex="0" role="img" aria-label="Your world: an island at night, lit where you have said what you think. The More tab has the same content as a list."></canvas>
+
+  <header class="top">
+    <div class="brand">
+      <h1>Horizon</h1>
+      <p id="dayline">Opening your world</p>
+    </div>
+    <button class="pill" id="fogpill" type="button" data-act="more" data-sub="progress" aria-label="Progress"><span id="fogtext">0% clear</span><i><b id="fogbar" style="width:0%"></b></i></button>
+  </header>
+
+  <div class="hud" id="hud" aria-label="Map controls">
+    <button type="button" data-act="zoom" data-f="1.3" aria-label="Zoom in">+</button>
+    <button type="button" data-act="zoom" data-f="0.77" aria-label="Zoom out">&minus;</button>
+    <button type="button" data-act="map-key" aria-label="How to read the map, and a list of everything on it" title="Map key">?</button>
+    <button type="button" data-act="view-recent" aria-label="Go to what you placed most recently" title="Recent">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v4M12 17.5v4M2.5 12h4M17.5 12h4"/></svg>
+    </button>
+    <button type="button" data-act="view-all" aria-label="See the whole island" title="Whole island">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 5l9 5-9 5-9-5 9-5z"/><path d="M3 14.5l9 5 9-5"/></svg>
+    </button>
+  </div>
+
+  <section class="sheet" id="sheet" aria-label="Panel"></section>
+
+  <nav class="tabs" id="tabs" aria-label="Sections">
+    <button type="button" data-act="go" data-view="map">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M12 5l9 5-9 5-9-5 9-5z"/><path d="M3 14.5l9 5 9-5"/></svg>Map</button>
+    <button type="button" data-act="go" data-view="today">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M12 3a3 3 0 0 1 3 3v5a3 3 0 0 1-6 0V6a3 3 0 0 1 3-3z"/><path d="M6 11a6 6 0 0 0 12 0M12 17v4"/></svg>Today</button>
+    <button type="button" data-act="go" data-view="bets">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 21V4M6 5h11l-2.5 3.5L17 12H6"/></svg>Bets<span class="dot" id="betdot" hidden></span></button>
+    <button type="button" data-act="go" data-view="concepts">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5l2 3v12.5h-4V5.5l2-3zM7 21.5h10"/></svg>Concepts</button>
+    <button type="button" data-act="go" data-view="more">
+      <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="19" cy="12" r="1.7"/></svg>More</button>
+  </nav>
+
+  <div class="film" id="film" hidden></div>
+  <div class="scrim" id="scrim" hidden><div class="dialog" id="dialog" role="dialog" aria-modal="true" aria-labelledby="dialog-t"></div></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</div>
+<script src="js/core.js"></script>
+<script src="js/world.js"></script>
+<script src="js/store.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

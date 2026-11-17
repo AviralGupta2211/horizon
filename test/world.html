@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>world check</title>
+<style>html,body{height:100%;margin:0;background:#0b1322}canvas{width:100%;height:100%;display:block}</style></head>
+<body><canvas id="c"></canvas>
+<script src="../js/core.js"></script><script src="../js/world.js"></script><script src="fixture.js"></script>
+<script>
+  var q = new URLSearchParams(location.search), days = +(q.get('days') || 24);
+  var s = HZFixture(days);
+  var w = HZWorld.create(document.getElementById('c'), { reducedMotion: true });
+  w.setState(s);
+  if (q.get('tint')) w.setTint(true);
+  if (q.get('view') === 'all') w.fitAll(0); else if (q.get('view') === 'close') { var u = s.units[4]; w.focus(u.pos, 1.9, 0); w.select('unit', u.id); } else w.fitLit(0);
+  w.render(1000);
+  window.__done = true;
+</script></body></html>

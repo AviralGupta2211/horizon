@@ -1,0 +1,17 @@
+{
+  "name": "horizon",
+  "version": "0.2.0",
+  "description": "Horizon: talk to it for two minutes a day and it builds a map of how you think.",
+  "private": true,
+  "scripts": {
+    "test": "node test/core.test.js && node test/env.test.js && node test/e2e.js",
+    "test:core": "node test/core.test.js && node test/env.test.js",
+    "test:e2e": "node test/e2e.js",
+    "shots": "node test/e2e.js --shots",
+    "icons": "node tools/make-icons.js",
+    "serve": "python3 -m http.server 8000"
+  },
+  "devDependencies": {
+    "puppeteer-core": "^25.17.0"
+  }
+}
