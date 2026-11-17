@@ -76,6 +76,16 @@ python3 -m http.server 8000
 
 Then open http://localhost:8000. Serve it over http rather than opening the file directly.
 
+### Publishing the site
+
+The code lives on `main`. The public site is served by GitHub Pages from the `gh-pages` branch, which holds only the files the page needs (`index.html`, `css/`, `js/`, `fonts/`, `icons/`, the manifest). After pushing a change to `main`, publish it with:
+
+```
+sh tools/publish-site.sh
+```
+
+GitHub takes a minute or two to put it live.
+
 ## Checks
 
 ```
@@ -99,6 +109,7 @@ python3 tools/tribe_lens.py --self-test
 | `test/` | The checks and their stand-ins |
 | `tools/tribe_lens.py` | The real brain lens |
 | `tools/make-icons.js` | Renders the icon sizes from `icons/icon.svg` |
+| `tools/publish-site.sh` | Puts the site's files on the `gh-pages` branch and pushes it |
 
 The prompts and the validation of replies are in `js/core.js` (`dailyPrompt`, `normalizeDaily`, `challengePrompt`, `expeditionPrompt`, `overlayPrompt`). Nothing the model returns is trusted: every field is checked, clipped and typed before it touches the map.
 
